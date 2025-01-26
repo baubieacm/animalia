@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Vet</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../loggo.png" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+</head>
+
+<style>
+    #map {
+        height: 350px;
+        width: 100%;
+    }
+
+    .provider-logo {
+        width: 30px;
+        /* Adjust size of the logo */
+        height: 30px;
+    }
+
+    .ratings i {
+        color: green;
+    }
+
+    .install span {
+        font-size: 12px;
+    }
+</style>
+
+<body>
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #09262c;">
+        <div class="container px-5">
+            <a class="navbar-brand" href="#!" style="font-weight: bold;color: #ff6600;">
+                <img src="../loggo.png" alt="Care" style="width: 60px; height: 60px;" /> Vet
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">General consultation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">Surgery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">Obstetrical</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Header-->
+    <header class="pt-2">
+        <div class="container px-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-12 pt-4 pb-4">
+                    <div class="video-background">
+                        <video autoplay loop muted>
+                            <source src="vet.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <div class="content">
+                        <h1>Animalia Vet Service</h1>
+                        <p>Quick, Easy, and Reliable Access to Veterinary Care Right Around the Corner</p>
+                        <button id="myBtn">Search Nearby Vets</button>
+                    </div>
+                </div>
+
+                <div class="col-lg-12  pb-4">
+                    <div id="map"></div>
+                </div>
+
+                <style>
+                    .video-background {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        z-index: -1;
+                    }
+
+                    .video-background video {
+                        width: 100%;
+                        object-fit: cover;
+                    }
+
+                    .content {
+                        position: relative;
+                        background: rgba(0, 0, 0, 0.5);
+                        color: #f1f1f1;
+                        width: 100%;
+                        padding: 20px;
+                        text-align: center;
+                        z-index: 1;
+                    }
+
+                    #myBtn {
+                        width: 200px;
+                        font-size: 18px;
+                        padding: 10px;
+                        border: none;
+                        background: #000;
+                        color: #fff;
+                        cursor: pointer;
+                    }
+
+                    #myBtn:hover {
+                        background:#ff6600;
+                        color: black;
+                    }
+                </style>
+
+            </div>
+        </div>
+    </header>
+
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4 pt-2">
+                <div class="card p-3">
+                    <div class="d-flex flex-row mb-3"><img
+                            src="data:image/jpeg;base64,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"
+                            width="70">
+                        <div class="d-flex flex-column ml-2"><span>Dr. Kazi Mujibur Rahman</span><span class="text-black-50">Happy Pets Vet Care</span><span class="ratings"><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+                    <h6>Veterinary Internal Medicine</h6>
+                    <div class="d-flex justify-content-between install mt-3"><span>Installed 172 times</span><span
+                            class="text-primary">Get Appointment&nbsp;<i class="fa fa-angle-right"></i></span></div>
+                </div>
+            </div>
+            <div class="col-md-4 pt-2">
+                <div class="card p-3">
+                    <div class="d-flex flex-row mb-3"><img src="data:image/jpeg;base64,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" width="70">
+                        <div class="d-flex flex-column ml-2"><span>Dr. Milo Parker</span><span class="text-black-50">Happy Pets Vet Care</span><span class="ratings"><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+                    <h6>Veterinary Internal Medicine</h6>
+                    <div class="d-flex justify-content-between install mt-3"><span>Kawatkhali,Mymensingh</span><span
+                            class="text-primary">Get Appointment&nbsp;<i class="fa fa-angle-right"></i></span></div>
+                </div>
+            </div>
+            <div class="col-md-4 pt-2">
+                <div class="card p-3">
+                    <div class="d-flex flex-row mb-3"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJXaMpvrAJRrnogkj9u2LNTlA1vFj_1ZTssg&s" width="70">
+                        <div class="d-flex flex-column ml-2"><span>Dr. Leo Carter</span><span class="text-black-50">Happy Pets Vet Care</span><span class="ratings"><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+                    <h6>Veterinary Internal Medicine</h6>
+                    <div class="d-flex justify-content-between install mt-3"><span>Kawatkhali,Mymensingh</span><span
+                            class="text-primary">Get Appointment&nbsp;<i class="fa fa-angle-right"></i></span></div>
+                </div>
+            </div>
+            <div class="col-md-4 pt-2">
+                <div class="card p-3">
+                    <div class="d-flex flex-row mb-3"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ63WdsTMcDKjdDQCkQaS1LBrer0DpqHxqX6Q&s" width="70">
+                        <div class="d-flex flex-column ml-2"><span>Dr. Bella Thompson</span><span
+                                class="text-black-50">Happy Pets Vet Care</span><span class="ratings"><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+                    <h6>Veterinary Anesthesia </h6>
+                    <div class="d-flex justify-content-between install mt-3"><span>Kawatkhali,Mymensingh</span><span
+                            class="text-primary">Get Appointment&nbsp;<i class="fa fa-angle-right"></i></span></div>
+                </div>
+            </div>
+            <div class="col-md-4 pt-2">
+                <div class="card p-3">
+                    <div class="d-flex flex-row mb-3"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuj2a_Lkjnw0IRzGPJgasIV0HWQjiMGP4M4g&s" width="70">
+                        <div class="d-flex flex-column ml-2"><span>Dr. Thor Anderson</span><span class="text-black-50">Happy Pets Vet Care</span><span class="ratings"><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+                    <h6>Veterinary Anesthesia </h6>
+                    <div class="d-flex justify-content-between install mt-3"><span>Kawatkhali,Mymensingh</span><span
+                            class="text-primary">Get Appointment&nbsp;<i class="fa fa-angle-right"></i></span></div>
+                </div>
+            </div>
+            <div class="col-md-4 pt-2">
+                <div class="card p-3">
+                    <div class="d-flex flex-row mb-3"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS5Ub-r2wrDnint_u-2HMQ9wQeLVPKoy9glg&s" width="70">
+                        <div class="d-flex flex-column ml-2"><span>Dr. Bella Thompson</span><span class="text-black-50">Happy Pets Vet Care</span><span class="ratings"><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+                    <h6>Veterinary Anesthesia </h6>
+                    <div class="d-flex justify-content-between install mt-3"><span>Kawatkhali,Mymensingh</span><span
+                            class="text-primary">Get Appointment&nbsp;<i class="fa fa-angle-right"></i></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Testimonials section-->
+    <section class="py-5 border-bottom">
+        <div class="container px-5 my-5 px-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder">We Value Your Feedback!</h2>
+                <p class="lead mb-0">We’re committed to providing the best care, and we’d love to hear from you.</p>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-12">
+                    <!-- Testimonial 1-->
+                    <div class="card mb-4">
+                        <div class="card-body p-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i>
+                                </div>
+                                <div class="ms-4">
+                                    <p class="mb-1">Thank you for providing such exceptional care for our furry friend!
+                                        We truly appreciated working with you and your entire team. Your professionalism
+                                        and compassion made all the difference, and we’ll definitely be recommending
+                                        your services to others!
+                                    </p>
+                                    <div class="small text-muted">- Sarah Johnson – New York City, NY</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2-->
+                    <div class="card">
+                        <div class="card-body p-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i>
+                                </div>
+                                <div class="ms-4">
+                                    <p class="mb-1">We can’t thank you enough for the amazing care you provided to our
+                                        pet. The whole experience was fantastic, and your team made us feel so
+                                        comfortable every step of the way. We’ll definitely be recommending your
+                                        services to our friends and family!</p>
+                                    <div class="small text-muted">- Michael Rodriguez – Austin, TX</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer-->
+    <footer class="py-5 " style="background-color:#09262c;">
+        <div class="container">
+            <p class="m-0 text-center text-white">© 2025 Animalia-Vet. Stay connected for more updates!</p>
+        </div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <script>
+        // Initialize the map with Google Maps tiles (without API key)
+        var map = L.map('map').setView([51.505, -0.09], 18); // Set initial map view (latitude, longitude)
+
+        // Add Google Maps as the tile layer using Google’s public tile URLs (without API key)
+        var googleLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            maxZoom: 21,
+        }).addTo(map);
+
+        // Sample data for pet food providers
+        var petFoodProviders = [
+
+            {
+                name: 'Pet Food Express Vet Clinic',
+
+                lat: 51.505,
+                lon: -0.09,
+                logo: 'https://people.com/thmb/iqGlx2aAm9isQbPVp5Y6PvXQuxI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/purina-pro-plan-adult-7--shredded-blend-chicken--rice-formula-dry-dog-food-3a29d3a7edf94f0fa1bedcad6f90cae4.jpg',
+                rating: 4.7
+            },
+            {
+                name: 'Happy Pets Vet Care',
+
+                lat: 51.505,
+                lon: -0.091
+                ,
+                logo: 'https://d6vhjw8wa28ve.cloudfront.net/wp-content/uploads/2019/01/Diamond-Logo_rev-1.png',
+                rating: 4.2
+            },
+            {
+                name: "Paws & Whiskers Veterinary Clinic",
+
+                lat: 51.5052,
+                lon: -0.088
+                ,
+                logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwWfdZ5Tv2NGhyKFJwEPB6FKqY7Pe7F0i-4zkrGbW40XEqN_Y9',
+                rating: 4.9
+            },
+            {
+                name: 'Pet Palace Animal Hospital',
+                lat: 51.5048,
+                lon: -0.089,
+
+                logo: 'https://www.thesprucepets.com/thmb/2eH3YKXI_i8XmNf09jaGswZJzJA=/fit-in/1019x1500/filters:no_upscale():strip_icc()/81XP8eh1GFL._AC_SL1500_-9af760615281485f8e68a9b11032a385.jpg',
+                rating: 4.8
+            }
+
+
+        ];
+
+        // Loop through pet food providers and add them to the map with custom circle + logo
+        petFoodProviders.forEach(function (provider) {
+            // Create a circle marker as the background circle
+            var circleMarker = L.circleMarker([provider.lat, provider.lon], {
+                color: 'blue', // Circle color
+                fillColor: 'blue', // Circle fill color
+                fillOpacity: 0.3, // Circle fill opacity
+                radius: 30 // Circle radius
+            }).addTo(map);
+
+            // Create a custom icon using the provider's logo
+            var providerIcon = L.icon({
+                iconUrl: provider.logo,  // Set the provider's logo as the icon URL
+                iconSize: [30, 30],      // Adjust size of the logo
+                iconAnchor: [15, 15],    // Position the logo icon in the center of the circle
+                popupAnchor: [0, -40]    // Adjust the position of the popup relative to the icon
+            });
+
+            // Create a marker for the provider using the custom logo icon
+            var marker = L.marker([provider.lat, provider.lon], { icon: providerIcon }).addTo(map);
+
+            // Create content for the popup
+            var popupContent = `
+<div>
+<h4>${provider.name}</h4>
+<p>Rating: ${provider.rating}</p>
+<a href="tel:+1234567890" class="call-button">Call ${provider.name}</a>
+</div>
+`;
+
+
+            // When the marker is clicked, show the popup with provider details
+            marker.bindPopup(popupContent).openPopup();
+        });
+    </script>
+</body>
+
+</html>

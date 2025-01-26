@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Pet Food</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../loggo.png" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+
+    .provider-logo {
+        width: 30px;
+        /* Adjust size of the logo */
+        height: 30px;
+    }
+</style>
+
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg sticky-top "
+        style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;background-color: #f2f5f4;">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#!" style="font-weight: bold;color: #ff6600;">
+                <img src="../loggo.png" alt="Care" style="width: 60px; height: 60px;" /> Pet Food
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">TrackMyPetFood</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#!">All Products</a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li><a class="dropdown-item" href="#!">Cat Items</a></li>
+                            <li><a class="dropdown-item" href="#!">Dog Items</a></li>
+                            <li><a class="dropdown-item" href="#!">Others Items</a></li>
+                            <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                            <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <button class="btn " type="submit" style="background-color: #ff6600;">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart :
+                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-dark py-2" style="background-color: #604CC3;">
+        <div class="container bg-dark px-4 px-lg-5 my-5" >
+            <div class="text-center text-white">
+                <h3 class="display-6 fw-bolder"
+                    style="color:black; ">
+                    Animalia-Pet Food, Just Around the Corner</h3>
+                <p class="lead fw-normal  mb-0"
+                    style="font-weight:200;color:#604CC3;">
+                    Quickly Find Nearby Pet Food Providers and Get What Your Pet Craves</p>
+            </div>
+        </div>
+    </header>
+    <div class="container pt-6">
+        <div class="row  justify-content-center">
+            <div class="col mb-12">
+
+                <div id="map"></div>
+            </div>
+        </div>
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top"
+                                src="https://bdpetmart.com/wp-content/uploads/2023/05/Adult-Chicken-1.2kg.png"
+                                alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Fancy Product</h5>
+                                    <!-- Product price-->
+                                    $40.00 - $80.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View
+                                        options</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                Sale
+                            </div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="https://bdpetmart.com/wp-content/uploads/2024/12/39.png"
+                                alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Special Item</h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">$20.00</span>
+                                    $18.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
+                                        cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                Sale
+                            </div>
+                            <!-- Product image-->
+                            <img class="card-img-top"
+                                src="https://bdpetmart.com/wp-content/uploads/2023/10/Captin-01.png" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Sale Item</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">$50.00</span>
+                                    $25.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
+                                        cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top"
+                                src="https://bdpetmart.com/wp-content/uploads/2022/10/Bonnie-Adult-Chicken-10kg.png"
+                                alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Popular Item</h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                    <!-- Product price-->
+                                    $40.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
+                                        cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                Sale
+                            </div>
+                            <!-- Product image-->
+                            <img class="card-img-top"
+                                src="https://bdpetmart.com/wp-content/uploads/2022/10/Bonnie-Adult-Chicken-1.5kg.png"
+                                alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Sale Item</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">$50.00</span>
+                                    $25.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
+                                        cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="https://bdpetmart.com/wp-content/uploads/2024/12/34.png"
+                                alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Fancy Product</h5>
+                                    <!-- Product price-->
+                                    $120.00 - $280.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View
+                                        options</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                Sale
+                            </div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="https://bdpetmart.com/wp-content/uploads/2024/03/Salmon.png"
+                                alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Special Item</h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">$20.00</span>
+                                    $18.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
+                                        cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top"
+                                src="https://bdpetmart.com/wp-content/uploads/2024/04/Enjoy-Dog-Food-Chicken-10kg.png"
+                                alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Popular Item</h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                    <!-- Product price-->
+                                    $40.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
+                                        cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">© 2025 Animalia-Pet Food. Stay connected for more updates!</p>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <script>
+            // Initialize the map with Google Maps tiles (without API key)
+            var map = L.map('map').setView([51.505, -0.09], 18); // Set initial map view (latitude, longitude)
+
+            // Add Google Maps as the tile layer using Google’s public tile URLs (without API key)
+            var googleLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                maxZoom: 21,
+            }).addTo(map);
+
+            // Sample data for pet food providers
+            var petFoodProviders = [
+                {
+                    name: 'Pet Food Express',
+                    lat: 51.505,
+                    lon: -0.09,
+                    logo: 'https://people.com/thmb/iqGlx2aAm9isQbPVp5Y6PvXQuxI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/purina-pro-plan-adult-7--shredded-blend-chicken--rice-formula-dry-dog-food-3a29d3a7edf94f0fa1bedcad6f90cae4.jpg',
+                    rating: 4.7
+                },
+                {
+                    name: 'Happy Pets Market',
+                    lat: 51.505,
+                    lon: -0.091,
+                    logo: 'https://d6vhjw8wa28ve.cloudfront.net/wp-content/uploads/2019/01/Diamond-Logo_rev-1.png',
+                    rating: 4.2
+                },
+                {
+                    name: 'Paws & Whiskers Pet Supplies',
+                    lat: 51.5052,
+                    lon: -0.088,
+                    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwWfdZ5Tv2NGhyKFJwEPB6FKqY7Pe7F0i-4zkrGbW40XEqN_Y9',
+                    rating: 4.9
+                },
+                {
+                    name: 'Pet Palace',
+                    lat: 51.5049,
+                    lon: -0.092,
+                    logo: 'https://www.thesprucepets.com/thmb/2eH3YKXI_i8XmNf09jaGswZJzJA=/fit-in/1019x1500/filters:no_upscale():strip_icc()/81XP8eh1GFL._AC_SL1500_-9af760615281485f8e68a9b11032a385.jpg',
+                    rating: 4.8
+                },
+
+            ];
+
+            // Loop through pet food providers and add them to the map with custom circle + logo
+            petFoodProviders.forEach(function (provider) {
+                // Create a circle marker as the background circle
+                var circleMarker = L.circleMarker([provider.lat, provider.lon], {
+                    color: 'blue', // Circle color
+                    fillColor: 'blue', // Circle fill color
+                    fillOpacity: 0.3, // Circle fill opacity
+                    radius: 30 // Circle radius
+                }).addTo(map);
+
+                // Create a custom icon using the provider's logo
+                var providerIcon = L.icon({
+                    iconUrl: provider.logo,  // Set the provider's logo as the icon URL
+                    iconSize: [30, 30],      // Adjust size of the logo
+                    iconAnchor: [15, 15],    // Position the logo icon in the center of the circle
+                    popupAnchor: [0, -40]    // Adjust the position of the popup relative to the icon
+                });
+
+                // Create a marker for the provider using the custom logo icon
+                var marker = L.marker([provider.lat, provider.lon], { icon: providerIcon }).addTo(map);
+
+                // Create content for the popup
+                var popupContent = `
+  <div>
+    <h4>${provider.name}</h4>
+    <p>Rating: ${provider.rating}</p>
+    <a href="tel:+1234567890" class="call-button">Call ${provider.name}</a>
+  </div>
+`;
+
+
+                // When the marker is clicked, show the popup with provider details
+                marker.bindPopup(popupContent).openPopup();
+            });
+        </script>
+</body>
+
+</html>
