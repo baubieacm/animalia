@@ -1,0 +1,146 @@
+/*
+
+Tuts+ Web Design
+Codepen Challenge #2
+
+Design by Alexander Erlandsson
+https://alexerlandsson.com
+
+*/
+
+@import url(https://fonts.googleapis.com/css?family=Raleway:300);
+
+@color-primary: #33bb63;
+@color-gray: #808080;
+@color-lightgray: #bbbbbb;
+@color-white: #ffffff;
+@color-bg: #f5f5f5;
+@gutter: 40px;
+@form-width: 400px;
+@label-height: 30px;
+@input-margin: @gutter / 4;
+
+form {
+  width: @form-width;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  &:after {
+    content: "Enter your email and click on subscribe";
+    color: @color-lightgray;
+    font-size: 12px;
+  }
+}
+
+label {
+  color: @color-gray;
+  font-size: 18px;
+  display: table-cell;
+  vertical-align: bottom;
+  width: @form-width;
+  height: @label-height;
+  &:before {
+    content: "\f1d8";
+    font-family: fontAwesome;
+    margin-right: @gutter / 4;
+    color: @color-gray;
+  }
+}
+
+input {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 (@gutter / 2);
+  font: inherit;
+  &[type="email"] {
+    display: block;
+    width: 100%;
+    bcakground-color: @color-white;
+    border-radius: 10px;
+    border: 1px solid @color-gray;
+    margin: @input-margin 0;
+    -webkit-transition: border-color 0.4s ease 0, padding-right 0.2s ease 0.2s;
+    -moz-transition: border-color 0.4s ease 0, padding-right 0.2s ease 0.2s;
+    -o-transition: border-color 0.4s ease 0, padding-right 0.2s ease 0.2s;
+    transition: border-color 0.4s ease 0, padding-right 0.2s ease 0.2s;
+    &:focus {
+      outline: none;
+      border-color: @color-primary;
+      padding-right: 120px;
+      -webkit-transition: padding-right 0.2s ease 0 !important;
+      -moz-transition: padding-right 0.2s ease 0 !important;
+      -o-transition: padding-right 0.2s ease 0 !important;
+      transition: padding-right 0.2s ease 0 !important;
+      + input[type="submit"] {
+        visibility: visible;
+        opacity: 1;
+        border-color: @color-primary;
+      }
+    }
+  }
+  &[type="submit"] {
+    border: none;
+    border-left: 1px solid @color-gray;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: @color-primary;
+    background-color: inherit;
+    cursor: pointer;
+    position: absolute;
+    right: -1px;
+    top: @label-height + @input-margin;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease 0;
+    -moz-transition: all 0.4s ease 0;
+    -o-transition: all 0.4s ease 0;
+    transition: all 0.4s ease 0;
+    &:hover {
+      background-color: @color-primary;
+      color: @color-white;
+    }
+  }
+}
+
+::-webkit-input-placeholder {
+  text-transform: capitalize;
+}
+
+:-moz-placeholder {
+  text-transform: capitalize;
+}
+
+::-moz-placeholder {
+  text-transform: capitalize;
+}
+
+:-ms-input-placeholder {
+  text-transform: capitalize;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px @color-white inset;
+}
+
+/* Base Style */
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background-color: @color-bg;
+  font-family: "Raleway", sans-serif;
+  font-size: 14px;
+  margin-top: @gutter * 2;
+}
